@@ -15,8 +15,8 @@
       <file leaf-file-name="launcher.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Term_Proj/launcher.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="85" column="0" lean-forward="false" selection-start-line="61" selection-start-column="9" selection-end-line="85" selection-end-column="0" />
+            <state relative-caret-position="190">
+              <caret line="10" column="36" lean-forward="true" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
               <folding>
                 <element signature="e#37#66#0" expanded="true" />
               </folding>
@@ -27,7 +27,7 @@
       <file leaf-file-name="getFromInternet.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Term_Proj/getFromInternet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="779">
+            <state relative-caret-position="-1729">
               <caret line="46" column="16" lean-forward="false" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
               <folding>
                 <element signature="e#23#46#0" expanded="true" />
@@ -44,8 +44,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Term_Proj/launcher.py" />
         <option value="$PROJECT_DIR$/Term_Proj/getFromInternet.py" />
+        <option value="$PROJECT_DIR$/Term_Proj/launcher.py" />
       </list>
     </option>
   </component>
@@ -71,7 +71,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -100,6 +99,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -225,6 +225,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1074" y="7" width="825" height="1000" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16563658" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -254,6 +255,26 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Term_Proj/launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#37#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Term_Proj/getFromInternet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="779">
+          <caret line="46" column="16" lean-forward="false" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+          <folding>
+            <element signature="e#23#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Term_Proj/launcher.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -323,7 +344,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Term_Proj/getFromInternet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="779">
+        <state relative-caret-position="-1729">
           <caret line="46" column="16" lean-forward="false" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
           <folding>
             <element signature="e#23#46#0" expanded="true" />
@@ -333,8 +354,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Term_Proj/launcher.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="85" column="0" lean-forward="false" selection-start-line="61" selection-start-column="9" selection-end-line="85" selection-end-column="0" />
+        <state relative-caret-position="190">
+          <caret line="10" column="36" lean-forward="true" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
           <folding>
             <element signature="e#37#66#0" expanded="true" />
           </folding>

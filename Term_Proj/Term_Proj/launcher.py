@@ -6,12 +6,12 @@ import datetime
 #### Menu  implementation
 def printMenu():
     print("\nWelcome! Book Manager Program (xml version)")
-    print("========Menu==========")
+    print("=========Menu==========")
     print("Yesterday's BoxOffice: y")
     print("Get dailyBoxOffice: box")
     print("Get MovieData: data")
     print("Get DetailData: detail")
-    print("========Menu==========")
+    print("=========Menu==========")
     
 def launcherFunction(menu):
     if menu == 'y' :
