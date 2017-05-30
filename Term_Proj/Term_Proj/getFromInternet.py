@@ -65,9 +65,17 @@ def extractBoxOffice(strXml):
     BOList = []
     for item in itemElements:
         for item2 in itemElements2:
-            movieNm = item2.find("movieNm")
-            audiCnt = item2.find("audiCnt")
-            BOList.append({"movieNm":movieNm.text,"audiCnt":audiCnt.text})
+            rank = item2.find("rank") #순위
+            rankInten = item2.find("rankInten") #순위 변동
+            movieNm = item2.find("movieNm") #영화 제목
+            movieCd = item2.find("movieCd") #영화 코드
+            openDt = item2.find("openDt") #개봉일
+            #--정렬기준--
+            audiCnt = item2.find("audiCnt") #당관
+            salesAmt = item2.find("salesAmt") #당매
+            audiAcc = item2.find("audiAcc") #누관
+            salesAcc = item2.find("salesAcc") #누매
+            BOList.append({"rank":rank.text, "movieNm":movieNm.text, "movieCd":movieCd.text, "openDt":openDt.text, "rankInten":rankInten.text, "audiCnt":audiCnt.text, "salesAmt":salesAmt.text, "audiAcc":audiAcc.text, "salesAcc":salesAcc.text})
     return BOList
 
 def extractMovieData(strXml):
@@ -83,7 +91,8 @@ def extractMovieData(strXml):
             movieNmEn = item2.find("movieNmEn")
             openDt = item2.find("openDt")
             movieCd = item2.find("movieCd")
-            MVList.append({"movieNm":movieNm.text,"movieNmEn":movieNmEn.text, "openDt":openDt.text, "movieCd": movieCd.text})
+            genreAlt = item2.find("genreAlt")
+            MVList.append({"movieNm":movieNm.text,"movieNmEn":movieNmEn.text, "openDt":openDt.text, "movieCd": movieCd.text, "genreAlt":genreAlt.text})
     return MVList
 
 def extractDetailData(strXml):
@@ -96,7 +105,19 @@ def extractDetailData(strXml):
         movieNmEn = item.find("movieNmEn")
         showTm = item.find("showTm")
         openDt = item.find("openDt")
-    return{"movieNm":movieNm.text,"movieNmEn":movieNmEn.text, "showTm":showTm.text, "openDt":openDt.text}
+        for item2 in tree.getiterator("nations"):
+            for item3 in tree.getiterator("nation"):
+                nationNm = item3.find("nationNm")
+        for item2 in tree.getiterator("genres"):
+            for item3 in tree.getiterator("genre"):
+                genreNm = item3.find("genreNm")
+        for item2 in tree.getiterator("directors"):
+            for item3 in tree.getiterator("director"):
+                peopleNm = item3.find("peopleNm")
+        for item2 in tree.getiterator("audits"):
+            for item3 in tree.getiterator("audit"):
+                watchGradeNm = item3.find("watchGradeNm")
+    return{"movieNm":movieNm.text,"movieNmEn":movieNmEn.text, "showTm":showTm.text, "openDt":openDt.text, "nationNm":nationNm.text, "genreNm":genreNm.text, "peopleNm":peopleNm.text, "watchGradeNm":watchGradeNm.text}
 #--------------------------------------------------------------
 def sendMain():
     global host, port
