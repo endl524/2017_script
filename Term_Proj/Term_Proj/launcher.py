@@ -42,17 +42,19 @@ def launcherFunction(menu):
         print("당일 관객수 - 1 / 당일 매출액 - 2 / 누적 관객수 - 3 / 누적 매출액 - 4")
         howSort = input("How? >> ")
         print("")
-        if howSort == '1':
-            list_boxOffice
-            #sorted(list_boxOffice, key=lambda x, y: x[y['audiCnt']])
-        elif howSort == '2':
-            sorted(list_boxOffice, key=lambda x: x['salesAmt'])
-        elif howSort == '3':
-            sorted(list_boxOffice, key=lambda x: x['audiAcc'])
-        elif howSort == '4':
-            sorted(list_boxOffice, key=lambda x: x['salesAcc'])
-        else:
-            return 0
+        #if howSort == '1':
+        #    for i in range(len(list_boxOffice)-1):
+        #        j = i+1
+        #        if i['audiCnt'] < j['audiCnt']:
+        #            list_boxOffice[i] = list_boxOffice[j]
+        #elif howSort == '2':
+        #    sorted(list_boxOffice, key=lambda x: x['salesAmt'])
+        #elif howSort == '3':
+        #    sorted(list_boxOffice, key=lambda x: x['audiAcc'])
+        #elif howSort == '4':
+        #    sorted(list_boxOffice, key=lambda x: x['salesAcc'])
+        #else:
+        #    return 0
         rank = 0;
         for i in list_boxOffice:
             rank += 1
