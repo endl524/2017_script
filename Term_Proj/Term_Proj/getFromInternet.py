@@ -75,7 +75,7 @@ def extractBoxOffice(strXml):
             salesAmt = item2.find("salesAmt") #당매
             audiAcc = item2.find("audiAcc") #누관
             salesAcc = item2.find("salesAcc") #누매
-            BOList.append({"rank":rank.text, "movieNm":movieNm.text, "movieCd":movieCd.text, "openDt":openDt.text, "rankInten":rankInten.text, "audiCnt":audiCnt.text, "salesAmt":salesAmt.text, "audiAcc":audiAcc.text, "salesAcc":salesAcc.text})
+            BOList.append({"rank":rank.text, "movieNm":movieNm.text, "movieCd":movieCd.text, "openDt":openDt.text, "rankInten":int(rankInten.text), "audiCnt":int(audiCnt.text), "salesAmt":int(salesAmt.text), "audiAcc":int(audiAcc.text), "salesAcc":int(salesAcc.text)})
     return BOList
 
 def extractMovieData(strXml):

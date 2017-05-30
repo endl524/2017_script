@@ -42,19 +42,16 @@ def launcherFunction(menu):
         print("당일 관객수 - 1 / 당일 매출액 - 2 / 누적 관객수 - 3 / 누적 매출액 - 4")
         howSort = input("How? >> ")
         print("")
-        #if howSort == '1':
-        #    for i in range(len(list_boxOffice)-1):
-        #        j = i+1
-        #        if i['audiCnt'] < j['audiCnt']:
-        #            list_boxOffice[i] = list_boxOffice[j]
-        #elif howSort == '2':
-        #    sorted(list_boxOffice, key=lambda x: x['salesAmt'])
-        #elif howSort == '3':
-        #    sorted(list_boxOffice, key=lambda x: x['audiAcc'])
-        #elif howSort == '4':
-        #    sorted(list_boxOffice, key=lambda x: x['salesAcc'])
-        #else:
-        #    return 0
+        if howSort == '1':
+            list_boxOffice = sorted(list_boxOffice, key = lambda x: x['audiCnt'], reverse=True)
+        elif howSort == '2':
+            list_boxOffice = sorted(list_boxOffice, key=lambda x: x['salesAmt'], reverse=True)
+        elif howSort == '3':
+            list_boxOffice = sorted(list_boxOffice, key=lambda x: x['audiAcc'], reverse=True)
+        elif howSort == '4':
+            list_boxOffice = sorted(list_boxOffice, key=lambda x: x['salesAcc'], reverse=True)
+        else:
+            return 0
         rank = 0;
         for i in list_boxOffice:
             rank += 1
@@ -63,10 +60,10 @@ def launcherFunction(menu):
             print("영화 코드 : {0}".format(i['movieCd']))
             print("개봉일 : {0}".format(i['openDt']))
             #--
-            print("당일 관객 수 : {0} 명".format(format(int(i['audiCnt']), ',')))
-            print("당일 매출액 : {0} 원".format(format(int(i['salesAmt']), ',')))
-            print("누적 관객 수 : {0} 명".format(format(int(i['audiAcc']), ',')))
-            print("누적 매출액 : {0} 원".format(format(int(i['salesAcc']), ',')))
+            print("당일 관객 수 : {0} 명".format(format(i['audiCnt'], ',')))
+            print("당일 매출액 : {0} 원".format(format(i['salesAmt'], ',')))
+            print("누적 관객 수 : {0} 명".format(format(i['audiAcc'], ',')))
+            print("누적 매출액 : {0} 원".format(format(i['salesAcc'], ',')))
             print("")
     elif menu == 'search':
         mvdt = input ("영화제목을 입력하세요 : ")
