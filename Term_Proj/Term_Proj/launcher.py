@@ -11,6 +11,7 @@ def printMenu():
     print("일별 박스오피스 정렬(YYYYMMDD): date")
     print("영화 정보 검색: search")
     print("영화 코드를 입력하여 상세정보 검색: detail")
+    print("영화 제목으로 포스터 검색 : thumbnail")
     print("종료: exit")
     print("=========Menu==========")
     
@@ -98,6 +99,14 @@ def launcherFunction(menu):
         print("장르 : {0}".format(dic_movieDetail['genreNm']))
         print("감독명 : {0}".format(dic_movieDetail['peopleNm']))
         print("관람등급 : {0}".format(dic_movieDetail['watchGradeNm']))
+        print("")
+    elif menu == 'thumbnail':
+        q = input ("영화제목을 입력하세요 : ")
+        dic_thumbnail = getXML(q, 3)
+        print("")
+        print("'{0}' 검색 결과 입니다.".format(q))
+        print("")
+        print("영화 제목 : {0}".format(dic_thumbnail['thumbnail']))
         print("")
     elif menu == 'exit':
         global loopFlag
