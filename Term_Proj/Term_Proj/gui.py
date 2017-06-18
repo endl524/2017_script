@@ -21,6 +21,8 @@ logoPath = "logo1.jpg"
 logoImage = ImageTk.PhotoImage(Image.open(logoPath))
 starPath = "star.png"
 starImage = ImageTk.PhotoImage(Image.open(starPath))
+mailPath = "email.png"
+mailImage = ImageTk.PhotoImage(Image.open(mailPath))
 thumb_url = ""
 dic_thumbnail = {}
 img = 0
@@ -33,8 +35,10 @@ pht = 0
 n=ttk.Notebook(root)
 bo_Frame = ttk.Frame(n)
 sc_Frame = ttk.Frame(n)
+sm_Frame = ttk.Frame(n)
 n.add(bo_Frame, text='BoxOffice')
 n.add(sc_Frame, text='Search')
+n.add(sm_Frame, text='SendMail')
 n.place(x=20, y=105, width=960, height = 700)
 #Frame Setting End.
 
@@ -71,10 +75,12 @@ def Title():
     title.place(x=360, y=10)
     # Title Setting End.
 
-#============================================
+# BoxOffice==================================
 def BoxOfficeMenu():
     global list_boxOffice, m1_ListBox, m2_ListBox, m3_ListBox, m4_ListBox, m5_ListBox
     global dic_thumbnail, image
+    bgLabel = Label(bo_Frame, width=600, height=600, bg='white')
+    bgLabel.place(x=0, y=0)
     list_boxOffice = getXML(yesterday, 0, 0)
 
     init_dateInputLabel()
@@ -102,20 +108,6 @@ def BoxOfficeMenu():
 
     dateText = Label(bo_Frame, font=fontemp, bg="grey", fg="black", text="BOX OFFICE 순위")
     dateText.place(x=180, y=15)
-
-    m1_ListBox.delete(0, END)
-    m2_ListBox.delete(0, END)
-    m3_ListBox.delete(0, END)
-    m4_ListBox.delete(0, END)
-    m5_ListBox.delete(0, END)
-    rank = 0;
-    for i in list_boxOffice:
-        rank += 1
-        m1_ListBox.insert(rank - 1, "-{0}위-  {1}\n".format(rank, i['movieNm']))
-        m2_ListBox.insert(rank - 1, "{0} 명\n".format(format(int(i['audiCnt']), ',')))
-        m3_ListBox.insert(rank - 1, "{0} 원\n".format(format(int(i['salesAmt']), ',')))
-        m4_ListBox.insert(rank - 1, "{0} 명\n".format(format(int(i['audiAcc']), ',')))
-        m5_ListBox.insert(rank - 1, "{0} 원\n".format(format(int(i['salesAcc']), ',')))
 
     m1_ListBox.bind('<<ListboxSelect>>', listBox_Event)
 
@@ -173,7 +165,7 @@ def sortingButtonAction(b):
 def init_dateInputLabel():
     global InputLabel
     fontemp = font.Font(bo_Frame, size=12, weight='bold')
-    dateLabel = Label(bo_Frame, font=fontemp, text="날짜 입력\n(YYYYMMDD)")
+    dateLabel = Label(bo_Frame, font=fontemp, text="날짜 입력\n(YYYYMMDD)", bg='grey')
     dateLabel.place(x=405, y = 13)
     InputLabel = Entry(bo_Frame, font=fontemp, width=14, borderwidth=3, relief='ridge')
     InputLabel.place(x=520, y=20)
@@ -234,13 +226,14 @@ def draw_thumbnail(url):
 #============================================
 
 
-#============================================
+# Search=====================================
 def SearchMenu():
     global list_movieData, dic_detailData, s1_ListBox, s2_ListBox
     global dic_photo, photo
     list_movieData = []
     dic_detailData = {}
-
+    bgLabel = Label(sc_Frame, width=600, height=600, bg='white')
+    bgLabel.place(x=0, y=0)
     init_searchInputLabel()
 
     fontemp = font.Font(sc_Frame, size=12, weight='bold')
@@ -248,21 +241,21 @@ def SearchMenu():
     s1_ListBox.place(x=5, y=75)
     s2_ListBox = Listbox(sc_Frame, font=fontemp, width=37, height=10, borderwidth=2, relief='ridge')
     s2_ListBox.place(x=5, y=450)
-    
+
 
     s1_ListBox.bind('<<ListboxSelect>>', info_event)
+
 
 def init_searchInputLabel():
     global Input_search
     fontemp = font.Font(sc_Frame, size=12, weight='bold')
-    searchLabel = Label(sc_Frame, font=fontemp, text="영화 제목 입력")
-    searchLabel.place(x=60, y=15)
+    searchLabel = Label(sc_Frame, font=fontemp, text="영화 제목 입력", bg = 'grey')
+    searchLabel.place(x=65, y=10)
     Input_search = Entry(sc_Frame, font=fontemp, width=20, borderwidth=3, relief='ridge')
     Input_search.place(x=20, y=40)
     fontemp = font.Font(sc_Frame, size=12, weight='bold')
     sButton = Button(sc_Frame, font=fontemp, text="검색", command=lambda : get_search())
     sButton.place(x=220, y=37)
-
 def get_search():
     global list_movieData, s1_ListBox
     q = Input_search.get()
@@ -275,13 +268,11 @@ def get_search():
         s1_ListBox.insert(rank - 1, "- {0}\n".format(i['movieNm']))
 
 
-
 def info_event(evt):
     global s1_ListBox, list_movieData
     index = s1_ListBox.curselection()[0]
     get_movieinfo(list_movieData[index]['movieCd'])
     get_moviePhoto(list_movieData[index]['movieNm'], index)
-
 def get_movieinfo(q):
     global list_movieData, dic_detailData, s2_ListBox
     fontemp = font.Font(sc_Frame, size=12, weight='bold')
@@ -295,8 +286,6 @@ def get_movieinfo(q):
     s2_ListBox.insert(END, "장르: {0}\n".format(dic_detailData['genreNm']))
     s2_ListBox.insert(END, "감독명: {0}\n".format(dic_detailData['dirNm']))
     s2_ListBox.insert(END, "관람등급: {0}\n".format(dic_detailData['watchGradeNm']))
-
-
 def get_moviePhoto(q,index):
     global dic_photo, list_movieData, photo_url
     open1 = list_movieData[index]['openDt']
@@ -315,8 +304,43 @@ def movie_Photo(url):
 #============================================
 
 
+
+# Email======================================
+def EmailMenu():
+    bgLabel = Label(sm_Frame, width=600, height=600, bg='white')
+    bgLabel.place(x=0,y=0)
+    mailIcon = Label(sm_Frame, image=mailImage, bg='white')
+    mailIcon.place(x=30, y=220)
+    init_loginLabel()
+
+def init_loginLabel():
+    fontemp = font.Font(sm_Frame, size=40, weight='bold')
+    fontemp2 = font.Font(sm_Frame, size=30, weight='bold')
+    fontemp3 = font.Font(sm_Frame, size=20, weight='bold')
+
+    titleLabel = Label(sm_Frame, font = fontemp, text="SEND E-MAIL", bg='white')
+    titleLabel.place(x=470, y=180)
+
+    IDLabel = Label(sm_Frame, font = fontemp2, text="ID", bg='white')
+    IDLabel.place(x=350, y=280)
+    IDInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='red')
+    IDInputLabel.place(x=450, y=280)
+
+    PWLabel = Label(sm_Frame, font=fontemp2, text="PW", bg='white')
+    PWLabel.place(x=335, y=380)
+    PWInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='red')
+    PWInputLabel.place(x=450, y=380)
+
+    sendButton = Button(sm_Frame, font=fontemp3, text="Send")
+    sendButton.place(x=600, y=480)
+
+
+#============================================
+
+
 #  main loop
 Title()
 BoxOfficeMenu()
 SearchMenu()
+EmailMenu()
 root.mainloop()
