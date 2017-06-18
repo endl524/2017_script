@@ -24,6 +24,9 @@ starImage = ImageTk.PhotoImage(Image.open(starPath))
 thumb_url = ""
 dic_thumbnail = {}
 img = 0
+photo_url = ""
+dic_photo = {}
+pht = 0
 # Image Load End.
 
 # Frame Setting Start
@@ -37,7 +40,6 @@ n.place(x=20, y=105, width=960, height = 700)
 
 s = datetime.date.today() - datetime.timedelta(1)
 yesterday = s.strftime("%Y%m%d")
-
 
 
 
@@ -69,6 +71,7 @@ def Title():
     title.place(x=360, y=10)
     # Title Setting End.
 
+#============================================
 def BoxOfficeMenu():
     global list_boxOffice, m1_ListBox, m2_ListBox, m3_ListBox, m4_ListBox, m5_ListBox
     global dic_thumbnail, image
@@ -100,11 +103,11 @@ def BoxOfficeMenu():
     dateText = Label(bo_Frame, font=fontemp, bg="grey", fg="black", text="BOX OFFICE 순위")
     dateText.place(x=180, y=15)
 
-    m1_ListBox.delete(0, 9)
-    m2_ListBox.delete(0, 9)
-    m3_ListBox.delete(0, 9)
-    m4_ListBox.delete(0, 9)
-    m5_ListBox.delete(0, 9)
+    m1_ListBox.delete(0, END)
+    m2_ListBox.delete(0, END)
+    m3_ListBox.delete(0, END)
+    m4_ListBox.delete(0, END)
+    m5_ListBox.delete(0, END)
     rank = 0;
     for i in list_boxOffice:
         rank += 1
@@ -117,7 +120,6 @@ def BoxOfficeMenu():
     m1_ListBox.bind('<<ListboxSelect>>', listBox_Event)
 
     # BoxOffice Tab Setting End.
-
 
 
 def init_SortingButton():
@@ -152,11 +154,11 @@ def sortingButtonAction(b):
     elif b == 4:
         list_boxOffice = sorted(list_boxOffice, key=lambda x: x['salesAcc'], reverse=True)
 
-    m1_ListBox.delete(0, 9)
-    m2_ListBox.delete(0, 9)
-    m3_ListBox.delete(0, 9)
-    m4_ListBox.delete(0, 9)
-    m5_ListBox.delete(0, 9)
+    m1_ListBox.delete(0, END)
+    m2_ListBox.delete(0, END)
+    m3_ListBox.delete(0, END)
+    m4_ListBox.delete(0, END)
+    m5_ListBox.delete(0, END)
 
     rank = 0;
     for i in list_boxOffice:
@@ -171,8 +173,8 @@ def sortingButtonAction(b):
 def init_dateInputLabel():
     global InputLabel
     fontemp = font.Font(bo_Frame, size=12, weight='bold')
-    dateLabel = Label(bo_Frame, font=fontemp, text="날짜 입력")
-    dateLabel.place(x=440, y = 20)
+    dateLabel = Label(bo_Frame, font=fontemp, text="날짜 입력\n(YYYYMMDD)")
+    dateLabel.place(x=405, y = 13)
     InputLabel = Entry(bo_Frame, font=fontemp, width=14, borderwidth=3, relief='ridge')
     InputLabel.place(x=520, y=20)
 def init_dateSearchButton():
@@ -194,11 +196,11 @@ def searchButtonAction(is_yester):
     dateText = Label(bo_Frame, font=fontemp, bg="grey", fg="black", text="BOX OFFICE 순위\n({0} 기준)".format(date))
     dateText.place(x=180, y=15)
 
-    m1_ListBox.delete(0, 9)
-    m2_ListBox.delete(0, 9)
-    m3_ListBox.delete(0, 9)
-    m4_ListBox.delete(0, 9)
-    m5_ListBox.delete(0, 9)
+    m1_ListBox.delete(0, END)
+    m2_ListBox.delete(0, END)
+    m3_ListBox.delete(0, END)
+    m4_ListBox.delete(0, END)
+    m5_ListBox.delete(0, END)
 
     rank = 0;
     for i in list_boxOffice:
@@ -216,8 +218,8 @@ def listBox_Event(evt):
 def get_thumbnail(q,index):
     global dic_thumbnail, list_boxOffice, thumb_url
     open1 = list_boxOffice[index]['openDt']
+    print(open1)
     dic_thumbnail = getXML(q, 3, open1)
-    open2 = dic_thumbnail['openDt']
     thumb_url = dic_thumbnail['thumbnail']
     print(thumb_url)
     draw_thumbnail(thumb_url)
@@ -229,10 +231,92 @@ def draw_thumbnail(url):
     img = ImageTk.PhotoImage(im)
     label = Label(bo_Frame, image=img, width=430, height=625, bg='black')
     label.place(x=520, y=70)
+#============================================
 
 
-# main loop
+#============================================
+def SearchMenu():
+    global list_movieData, dic_detailData, s1_ListBox, s2_ListBox
+    global dic_photo, photo
+    list_movieData = []
+    dic_detailData = {}
+
+    init_searchInputLabel()
+
+    fontemp = font.Font(sc_Frame, size=12, weight='bold')
+    s1_ListBox = Listbox(sc_Frame, font=fontemp, width=37, height=18, borderwidth=2, relief='ridge')
+    s1_ListBox.place(x=5, y=75)
+    s2_ListBox = Listbox(sc_Frame, font=fontemp, width=37, height=10, borderwidth=2, relief='ridge')
+    s2_ListBox.place(x=5, y=450)
+    
+
+    s1_ListBox.bind('<<ListboxSelect>>', info_event)
+
+def init_searchInputLabel():
+    global Input_search
+    fontemp = font.Font(sc_Frame, size=12, weight='bold')
+    searchLabel = Label(sc_Frame, font=fontemp, text="영화 제목 입력")
+    searchLabel.place(x=60, y=15)
+    Input_search = Entry(sc_Frame, font=fontemp, width=20, borderwidth=3, relief='ridge')
+    Input_search.place(x=20, y=40)
+    fontemp = font.Font(sc_Frame, size=12, weight='bold')
+    sButton = Button(sc_Frame, font=fontemp, text="검색", command=lambda : get_search())
+    sButton.place(x=220, y=37)
+
+def get_search():
+    global list_movieData, s1_ListBox
+    q = Input_search.get()
+    fontemp = font.Font(sc_Frame, size=12, weight='bold')
+    list_movieData = getXML(q, 1, 0)
+    s1_ListBox.delete(0,END)
+    rank = 0;
+    for i in list_movieData:
+        rank += 1
+        s1_ListBox.insert(rank - 1, "- {0}\n".format(i['movieNm']))
+
+
+
+def info_event(evt):
+    global s1_ListBox, list_movieData
+    index = s1_ListBox.curselection()[0]
+    get_movieinfo(list_movieData[index]['movieCd'])
+    get_moviePhoto(list_movieData[index]['movieNm'], index)
+
+def get_movieinfo(q):
+    global list_movieData, dic_detailData, s2_ListBox
+    fontemp = font.Font(sc_Frame, size=12, weight='bold')
+    dic_detailData = getXML(q, 2, 0)
+    s2_ListBox.delete(0, END)
+    s2_ListBox.insert(END, "제목: {0}\n".format(dic_detailData['movieNm']))
+    s2_ListBox.insert(END, "영문 제목: {0}\n".format(dic_detailData['movieNmEn']))
+    s2_ListBox.insert(END, "상영시간: {0}분\n".format(dic_detailData['showTm']))
+    s2_ListBox.insert(END, "개봉일: {0}\n".format(dic_detailData['openDt']))
+    s2_ListBox.insert(END, "제작국가: {0}\n".format(dic_detailData['nationNm']))
+    s2_ListBox.insert(END, "장르: {0}\n".format(dic_detailData['genreNm']))
+    s2_ListBox.insert(END, "감독명: {0}\n".format(dic_detailData['dirNm']))
+    s2_ListBox.insert(END, "관람등급: {0}\n".format(dic_detailData['watchGradeNm']))
+
+
+def get_moviePhoto(q,index):
+    global dic_photo, list_movieData, photo_url
+    open1 = list_movieData[index]['openDt']
+    dic_photo = getXML(q, 3, open1)
+    photo_url = dic_photo['thumbnail']
+    if photo_url != NONE:
+        movie_Photo(photo_url)
+def movie_Photo(url):
+    global pht
+    with urllib.request.urlopen(url) as u:
+        raw_data = u.read()
+    im = Image.open(BytesIO(raw_data))
+    pht = ImageTk.PhotoImage(im)
+    label = Label(sc_Frame, image=pht, width=430, height=625, bg='black')
+    label.place(x=450, y=10)
+#============================================
+
+
+#  main loop
 Title()
 BoxOfficeMenu()
-
+SearchMenu()
 root.mainloop()

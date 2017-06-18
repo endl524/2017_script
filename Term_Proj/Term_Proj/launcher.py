@@ -20,7 +20,7 @@ def launcherFunction(menu):
 
         s = datetime.date.today() - datetime.timedelta(1)
         yesterday = s.strftime("%Y%m%d")
-        list_yesBoxOffice = getXML(yesterday, 0)
+        list_yesBoxOffice = getXML(yesterday, 0, 0)
         #print(list_yesBoxOffice)
         print("")
         for i in list_yesBoxOffice:
@@ -36,7 +36,7 @@ def launcherFunction(menu):
             print("")
     elif menu == 'date':
         tgdt = input ("날짜를 입력하세요 : ")
-        list_boxOffice = getXML(tgdt, 0)             # ret = list
+        list_boxOffice = getXML(tgdt, 0, 0)             # ret = list
         #print(list_boxOffice)
         print("")
         print("정렬 기준을 선택 해주세요")
@@ -68,7 +68,7 @@ def launcherFunction(menu):
             print("")
     elif menu == 'search':
         mvdt = input ("영화제목을 입력하세요 : ")
-        list_movieData = getXML(mvdt, 1)
+        list_movieData = getXML(mvdt, 1, 0)
         #print(list_movieData)
         print("")
         print("'{0}' 검색 결과 입니다.".format(mvdt))
@@ -86,8 +86,7 @@ def launcherFunction(menu):
         print("** 정확한 검색을 원하시면 제목을 정확히 입력해 주세요. **")
     elif menu == 'detail':
         mvcd = input ("영화코드를 입력하세요 : ")
-        dic_movieDetail = getXML(mvcd, 2)
-        #print(dic_movieDetail)
+        dic_movieDetail = getXML(mvcd, 2, 0)
         print("")
         print("코드 '{0}' 검색 결과 입니다.".format(mvcd))
         print("")
@@ -97,8 +96,10 @@ def launcherFunction(menu):
         print("개봉일 : {0}".format(dic_movieDetail['openDt']))
         print("제작국가 : {0}".format(dic_movieDetail['nationNm']))
         print("장르 : {0}".format(dic_movieDetail['genreNm']))
-        print("감독명 : {0}".format(dic_movieDetail['peopleNm']))
+        print("감독명 : {0}".format(dic_movieDetail['dirNm']))
         print("관람등급 : {0}".format(dic_movieDetail['watchGradeNm']))
+        for i in dic_movieDetail['actorList']:
+            print("배우: {0} - {1} 역".format(i['actorNm'], i['charNm']))
         print("")
     elif menu == 'thumbnail':
         q = input ("영화제목을 입력하세요 : ")

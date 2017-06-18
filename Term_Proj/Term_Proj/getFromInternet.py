@@ -10,7 +10,7 @@ conn = None
 regKey = "0848050b31dd08165f0638be3fce6e5a"
 server = "www.kobis.or.kr"
 
-daumKey =  "ee2ebfbd790f5541f5bea1e9f07150d4"
+daumKey =  "8d62f1664ef7401400175ae83fd286c3"
 daumServer = "apis.daum.net"
 
 
@@ -87,7 +87,7 @@ def extractBoxOffice(strXml):
             salesAmt = item2.find("salesAmt") #당매
             audiAcc = item2.find("audiAcc") #누관
             salesAcc = item2.find("salesAcc") #누매
-            BOList.append({"rank":rank.text, "movieNm":movieNm.text, "movieCd":movieCd.text, "openDt":str.replace("-", "."), "rankInten":int(rankInten.text), "audiCnt":int(audiCnt.text), "salesAmt":int(salesAmt.text), "audiAcc":int(audiAcc.text), "salesAcc":int(salesAcc.text)})
+            BOList.append({"rank":rank.text, "movieNm":movieNm.text, "movieCd":movieCd.text, "openDt":str.replace("-", ''), "rankInten":int(rankInten.text), "audiCnt":int(audiCnt.text), "salesAmt":int(salesAmt.text), "audiAcc":int(audiAcc.text), "salesAcc":int(salesAcc.text)})
     return BOList
 
 def extractMovieData(strXml):
@@ -110,24 +110,24 @@ def extractDetailData(strXml):
     from xml.etree import ElementTree
     tree = ElementTree.fromstring(strXml)
     itemElements = tree.getiterator("movieInfo")  # return list type
+    #actorList = []
     for item in itemElements:
         movieNm = item.find("movieNm")
         movieNmEn = item.find("movieNmEn")
         showTm = item.find("showTm")
         openDt = item.find("openDt")
-        for item2 in tree.getiterator("nations"):
-            for item3 in tree.getiterator("nation"):
-                nationNm = item3.find("nationNm")
-        for item2 in tree.getiterator("genres"):
-            for item3 in tree.getiterator("genre"):
-                genreNm = item3.find("genreNm")
-        for item2 in tree.getiterator("directors"):
-            for item3 in tree.getiterator("director"):
-                peopleNm = item3.find("peopleNm")
-        for item2 in tree.getiterator("audits"):
-            for item3 in tree.getiterator("audit"):
-                watchGradeNm = item3.find("watchGradeNm")
-    return {"movieNm":movieNm.text,"movieNmEn":movieNmEn.text, "showTm":showTm.text, "openDt":openDt.text, "nationNm":nationNm.text, "genreNm":genreNm.text, "peopleNm":peopleNm.text, "watchGradeNm":watchGradeNm.text}
+        str = openDt.text
+        nationNm = item.find("nations").find("nation").find("nationNm")
+        genreNm = item.find("genres").find("genre").find("genreNm")
+        dirNm = item.find("directors").find("director").find("peopleNm")
+        watchGradeNm = item.find("audits").find("audit").find("watchGradeNm")
+        #for item2 in tree.getiterator("actor"):
+        #    actorNm = item2.find("peopleNm")
+        #    charNm = item2.find("cast")
+        #    actorList.append({"actorNm":actorNm.text, "charNm":charNm.text})
+        if str != None:
+            return {"movieNm":movieNm.text,"movieNmEn":movieNmEn.text, "showTm":showTm.text, "openDt":str.replace("-", ''),
+            "nationNm":nationNm.text, "genreNm":genreNm.text, "dirNm":dirNm.text, "watchGradeNm":watchGradeNm.text}#, "actorList":actorList}
 
 def extractThumbnail(strXml, date):
     from xml.etree import ElementTree
@@ -137,8 +137,11 @@ def extractThumbnail(strXml, date):
         thumbnail = item.find("thumbnail").find("content")
         movieNm = item.find("title").find("content")
         openDt = item.find("open_info").find("content")
-        if openDt.text == date:
-            return {"movieNm": movieNm.text, "openDt": openDt.text, "thumbnail": thumbnail.text}
+        str = openDt.text
+        l = str.split('.')
+        str2 = l[0]+l[1]+l[2]
+        if str2 == date:
+            return {"movieNm": movieNm.text, "openDt": str2, "thumbnail": thumbnail.text}
 
 #--------------------------------------------------------------
 
