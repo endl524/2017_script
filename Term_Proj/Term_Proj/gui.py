@@ -10,6 +10,9 @@ from getFromInternet import *
 import datetime
 
 
+host = "smtp.gmail.com" # Gmail SMTP 서버 주소.
+port = "587"
+
 # Tk Setting Start.
 root = Tk()
 root.configure(background='black')
@@ -318,25 +321,163 @@ def init_loginLabel():
     fontemp2 = font.Font(sm_Frame, size=30, weight='bold')
     fontemp3 = font.Font(sm_Frame, size=20, weight='bold')
 
-    titleLabel = Label(sm_Frame, font = fontemp, text="SEND E-MAIL", bg='white')
-    titleLabel.place(x=470, y=180)
+    titleLabel = Label(sm_Frame, font=fontemp, text="SEND E-MAIL", bg='white')
+    titleLabel.place(x=470, y=50)
 
-    IDLabel = Label(sm_Frame, font = fontemp2, text="ID", bg='white')
-    IDLabel.place(x=350, y=280)
-    IDInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='red')
-    IDInputLabel.place(x=450, y=280)
+    IDLabel = Label(sm_Frame, font=fontemp2, text="ID", bg='white')
+    IDLabel.place(x=350, y=150)
+    IDInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='blue')
+    IDInputLabel.place(x=450, y=150)
 
     PWLabel = Label(sm_Frame, font=fontemp2, text="PW", bg='white')
-    PWLabel.place(x=335, y=380)
-    PWInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='red')
-    PWInputLabel.place(x=450, y=380)
+    PWLabel.place(x=335, y=250)
+    PWInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='blue', show='*')
+    PWInputLabel.place(x=450, y=250)
 
-    sendButton = Button(sm_Frame, font=fontemp3, text="Send")
-    sendButton.place(x=600, y=480)
+    getIDLabel = Label(sm_Frame, font=fontemp2, text="수신ID", bg='white')
+    getIDLabel.place(x=290, y=350)
+    getIDInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='blue')
+    getIDInputLabel.place(x=450, y=350)
 
+    getTiLabel = Label(sm_Frame, font=fontemp2, text="제목", bg='white')
+    getTiLabel.place(x=335, y=450)
+    getTiInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='blue')
+    getTiInputLabel.place(x=450, y=450)
 
+    sendButton = Button(sm_Frame, font=fontemp3, text="Send", command=lambda: sendMail())
+    sendButton.place(x=600, y=550)
 #============================================
+def sendMail():
+    global host, port
+    import mysmtplib
+    # MIMEMultipart의 MIME을 생성합니다.
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
 
+    msgtext = str('y')
+    if msgtext == 'y':
+        html = makeText()
+
+    senderAddr = str('agodim13@gmail.com')
+    passwd = str('asdf1020!')
+    recipientAddr = str('agodim13@gmail.com')
+    title = dic_detailData['movieNm']
+
+
+    #Message container를 생성합니다.
+    msg = MIMEMultipart('alternative')
+
+    #set message
+    msg['Subject'] = title
+    msg['From'] = senderAddr
+    msg['To'] = recipientAddr
+
+    infoPart = MIMEText(html, 'html', _charset = 'utf-8')
+
+    # 메세지에 생성한 MIME 문서를 첨부합니다.
+    msg.attach(infoPart)
+
+
+    print ("connect smtp server ... ")
+    smt = mysmtplib.MySMTP(host,port)
+    #s.set_debuglevel(1)
+    smt.ehlo()
+    smt.starttls()
+    smt.ehlo()
+    smt.login(senderAddr, passwd)    # 로긴을 합니다.
+    smt.sendmail(senderAddr , [recipientAddr], msg.as_string())
+    smt.close()
+
+    print ("Mail sending complete!!!")
+
+def makeText():
+    from xml.dom.minidom import getDOMImplementation
+    # get Dom Implementation
+    impl = getDOMImplementation()
+
+    newdoc = impl.createDocument(None, "html", None)  # DOM 객체 생성
+    top_element = newdoc.documentElement
+    header = newdoc.createElement('header')
+    top_element.appendChild(header)
+
+    # Body 엘리먼트 생성.
+    body = newdoc.createElement('body')
+    b= newdoc.createElement('b')
+    text1 = newdoc.createTextNode("영화 제목 : {0}".format(dic_detailData['movieNm']))
+    b.appendChild(text1)
+    body.appendChild(b)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    c = newdoc.createElement('c')
+    text2 = newdoc.createTextNode("영문명 : {0}".format(dic_detailData['movieNmEn']))
+    c.appendChild(text2)
+    body.appendChild(c)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    d = newdoc.createElement('d')
+    text3 = newdoc.createTextNode("상영 시간 : {0}".format(dic_detailData['showTm']))
+    d.appendChild(text3)
+    body.appendChild(d)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    e = newdoc.createElement('e')
+    text4 = newdoc.createTextNode("개봉일 : {0}".format(dic_detailData['openDt']))
+    e.appendChild(text4)
+    body.appendChild(e)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    f = newdoc.createElement('f')
+    text5 = newdoc.createTextNode("제작국가 : {0}".format(dic_detailData['nationNm']))
+    f.appendChild(text5)
+    body.appendChild(f)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    g = newdoc.createElement('g')
+    text6 = newdoc.createTextNode("장르 : {0}".format(dic_detailData['genreNm']))
+    g.appendChild(text6)
+    body.appendChild(g)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    h = newdoc.createElement('h')
+    text7 = newdoc.createTextNode("감독명 : {0}".format(dic_detailData['dirNm']))
+    h.appendChild(text7)
+    body.appendChild(h)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    i = newdoc.createElement('i')
+    text8 = newdoc.createTextNode("관람등급 : {0}".format(dic_detailData['watchGradeNm']))
+    i.appendChild(text8)
+    body.appendChild(i)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    j = newdoc.createElement('j')
+    text9 = newdoc.createTextNode("포스터 URL : {0}".format(dic_photo['thumbnail']))
+    j.appendChild(text9)
+    body.appendChild(j)
+
+    br = newdoc.createElement('br')
+    body.appendChild(br)
+
+    top_element.appendChild(body)
+
+    return newdoc.toxml()
+#========================================================================
 
 #  main loop
 Title()

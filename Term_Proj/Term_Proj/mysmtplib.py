@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: cp949 -*-
 import smtplib
 from email.base64mime import body_encode as encode_base64
 
@@ -10,8 +10,8 @@ class MySMTP(smtplib.SMTP):
             return encode_base64(response)
 
         def encode_plain(user, password):    
-            s = "₩0%s₩0%s" % (user, password)    
-            return encode_base64(s.encode('ascii'), eol='')
+            s = "\0%s\0%s" % (user, password)    
+            return encode_base64(s.encode('utf-8'), eol='')
             
         AUTH_PLAIN = "PLAIN"
         AUTH_CRAM_MD5 = "CRAM-MD5"
@@ -20,7 +20,7 @@ class MySMTP(smtplib.SMTP):
         self.ehlo_or_helo_if_needed()
 
         if not self.has_extn("auth"):
-            raise SMTPException("SMTP AUTH extension not supported by server.")
+            raise smtplib.SMTPException("SMTP AUTH extension not supported by server.")
 
         authlist = self.esmtp_features["auth"].split()
         preferred_auths = [AUTH_CRAM_MD5, AUTH_PLAIN, AUTH_LOGIN]
@@ -35,11 +35,11 @@ class MySMTP(smtplib.SMTP):
             (code, resp) = self.docmd("AUTH",
                 "%s %s" % (AUTH_LOGIN, encode_base64(user)))
             if code != 334:
-                raise SMTPAuthenticationError(code, resp)
+                raise smtplib.SMTPAuthenticationError(code, resp)
             (code, resp) = self.docmd(encode_base64(password))           
         elif authmethod == AUTH_PLAIN:
-            temp_encode_plain = str(encode_plain(user, password))
-            temp_encode_plain = temp_encode_plain.replace("₩n","")
+            temp_encode_plain = encode_plain(user, password)
+            temp_encode_plain = temp_encode_plain.replace("\n","")
             (code, resp) = self.docmd("AUTH",
                 AUTH_PLAIN + " " + temp_encode_plain)
         elif authmethod == AUTH_CRAM_MD5:
@@ -48,7 +48,7 @@ class MySMTP(smtplib.SMTP):
                 return (code, resp)
             (code, resp) = self.docmd(encode_cram_md5(resp, user, password))     
         elif authmethod is None:
-            raise SMTPException("No suitable authentication method found.")
+            raise smtplib.SMTPException("No suitable authentication method found.")
         if code not in (235, 503):
-            raise SMTPAuthenticationError(code, resp)
+            raise smtplib.SMTPAuthenticationError(code, resp)
         return (code, resp)
