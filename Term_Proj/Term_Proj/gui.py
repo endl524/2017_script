@@ -10,6 +10,7 @@ from getFromInternet import *
 import datetime
 
 
+
 host = "smtp.gmail.com" # Gmail SMTP 서버 주소.
 port = "587"
 
@@ -17,6 +18,7 @@ port = "587"
 root = Tk()
 root.configure(background='black')
 root.geometry("1000x830+200+100")
+root.title("박스오피스 & 영화검색")
 # Tk Setting End.
 
 # Image Load Start.
@@ -317,61 +319,50 @@ def EmailMenu():
     init_loginLabel()
 
 def init_loginLabel():
+    global IDInputLabel, PWInputLabel
     fontemp = font.Font(sm_Frame, size=40, weight='bold')
     fontemp2 = font.Font(sm_Frame, size=30, weight='bold')
     fontemp3 = font.Font(sm_Frame, size=20, weight='bold')
 
     titleLabel = Label(sm_Frame, font=fontemp, text="SEND E-MAIL", bg='white')
-    titleLabel.place(x=470, y=50)
+    titleLabel.place(x=470, y=150)
 
     IDLabel = Label(sm_Frame, font=fontemp2, text="ID", bg='white')
-    IDLabel.place(x=350, y=150)
+    IDLabel.place(x=350, y=250)
     IDInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='blue')
-    IDInputLabel.place(x=450, y=150)
+    IDInputLabel.place(x=450, y=250)
 
     PWLabel = Label(sm_Frame, font=fontemp2, text="PW", bg='white')
-    PWLabel.place(x=335, y=250)
+    PWLabel.place(x=335, y=350)
     PWInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='blue', show='*')
-    PWInputLabel.place(x=450, y=250)
-
-    getIDLabel = Label(sm_Frame, font=fontemp2, text="수신ID", bg='white')
-    getIDLabel.place(x=290, y=350)
-    getIDInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='blue')
-    getIDInputLabel.place(x=450, y=350)
-
-    getTiLabel = Label(sm_Frame, font=fontemp2, text="제목", bg='white')
-    getTiLabel.place(x=335, y=450)
-    getTiInputLabel = Entry(sm_Frame, font=fontemp2, width=18, borderwidth=3, relief='ridge', fg='blue')
-    getTiInputLabel.place(x=450, y=450)
+    PWInputLabel.place(x=450, y=350)
 
     sendButton = Button(sm_Frame, font=fontemp3, text="Send", command=lambda: sendMail())
     sendButton.place(x=600, y=550)
 #============================================
 def sendMail():
-    global host, port
+    global host, port, id, pw
     import mysmtplib
     # MIMEMultipart의 MIME을 생성합니다.
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
 
+    id = IDInputLabel.get()
+    pw = PWInputLabel.get()
+
     msgtext = str('y')
     if msgtext == 'y':
         html = makeText()
 
-    senderAddr = str('agodim13@gmail.com')
-    passwd = str('asdf1020!')
-    recipientAddr = str('agodim13@gmail.com')
     title = dic_detailData['movieNm']
-
 
     #Message container를 생성합니다.
     msg = MIMEMultipart('alternative')
 
     #set message
     msg['Subject'] = title
-    msg['From'] = senderAddr
-    msg['To'] = recipientAddr
-
+    msg['From'] = id
+    msg['To'] = id
     infoPart = MIMEText(html, 'html', _charset = 'utf-8')
 
     # 메세지에 생성한 MIME 문서를 첨부합니다.
@@ -384,8 +375,8 @@ def sendMail():
     smt.ehlo()
     smt.starttls()
     smt.ehlo()
-    smt.login(senderAddr, passwd)    # 로긴을 합니다.
-    smt.sendmail(senderAddr , [recipientAddr], msg.as_string())
+    smt.login(id, pw)    # 로긴을 합니다.
+    smt.sendmail(id , [id], msg.as_string())
     smt.close()
 
     print ("Mail sending complete!!!")

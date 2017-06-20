@@ -1,0 +1,8 @@
+getFromInternet.py
+gui.py
+mysmtplib.py
+setup.py
+BoxOffice.egg-info/PKG-INFO
+BoxOffice.egg-info/SOURCES.txt
+BoxOffice.egg-info/dependency_links.txt
+BoxOffice.egg-info/top_level.txt

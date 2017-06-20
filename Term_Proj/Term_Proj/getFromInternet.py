@@ -4,6 +4,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
 import sys
 import urllib.request
+import spam
 
 ##global
 conn = None
@@ -21,6 +22,7 @@ port = "587"
 def userURIBuilder(server,case,**user):
     #str = "http://" + server + "/search" + "?"
     if case == 0:
+        #spam.strcat("https://" , server)
         str = "https://" + server + "/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml?"
     elif case == 1:
         str = "https://" + server + "/kobisopenapi/webservice/rest/movie/searchMovieList.xml?"
